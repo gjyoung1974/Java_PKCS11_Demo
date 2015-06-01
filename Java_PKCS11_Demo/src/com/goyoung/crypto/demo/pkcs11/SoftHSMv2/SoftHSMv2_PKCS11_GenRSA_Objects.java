@@ -12,7 +12,7 @@ import sun.security.pkcs11.wrapper.PKCS11;
 import sun.security.pkcs11.wrapper.PKCS11Constants;
 import sun.security.pkcs11.wrapper.PKCS11Exception;
 
-public class SoftHSMv2_PKCS11_Session_Demo {
+public class SoftHSMv2_PKCS11_GenRSA_Objects {
 
 	public static final long CKF_SERIAL_SESSION = 0x00000004L;// pkcs11.h constants
 	public static final long CKF_RW_SESSION = 0x00000002L;
