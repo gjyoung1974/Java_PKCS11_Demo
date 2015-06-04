@@ -3,8 +3,6 @@ package com.goyoung.crypto.demo.pkcs11.SoftHSMv2;
 import java.io.IOException;
 import java.util.UUID;
 
-import org.bouncycastle.util.encoders.Hex;
-
 import sun.security.pkcs11.wrapper.CK_ATTRIBUTE;
 import sun.security.pkcs11.wrapper.CK_C_INITIALIZE_ARGS;
 import sun.security.pkcs11.wrapper.CK_MECHANISM;
@@ -30,32 +28,30 @@ public class SoftHSMv2_PKCS11_GenRSA_Objects {
 		String label = new String(p11.C_GetTokenInfo(slots[0]).label);//get the first slot
 		System.out.println(label);
 
-		long modulusBits = 2048;
-		byte publicExponent[] = { 1,0,1 }; // 
-		//int publicExponent = 65537;
-	
-
-		String subject = "mykey";//text human readble key label
-		String uuID = UUID.randomUUID().toString();//or use a UUID
+		long CKA_MODULUS = 2048;
 		
-		byte id[] = { 0x03 };//numeric key id
+		byte[] CKA_PUBLIC_EXPONENT = { 0x01, 0x00, 0x01 }; //int publicExponent = 65537;
+
+
+		String CKA_LABEL = "test-rsa-key-cert";//text human readble key label
+		byte[] CKA_ID = UUID.randomUUID().toString().getBytes();//numeric key id from UUID
 
 		CK_ATTRIBUTE[] publicKeyTemplate = { //rsa public key
-				new CK_ATTRIBUTE(PKCS11Constants.CKA_ID, id),
-				new CK_ATTRIBUTE(PKCS11Constants.CKA_LABEL, uuID),
+				new CK_ATTRIBUTE(PKCS11Constants.CKA_ID, CKA_ID),
+				new CK_ATTRIBUTE(PKCS11Constants.CKA_LABEL, CKA_LABEL),
 				new CK_ATTRIBUTE(PKCS11Constants.CKA_TOKEN, true),
 				new CK_ATTRIBUTE(PKCS11Constants.CKA_ENCRYPT, true),
 				new CK_ATTRIBUTE(PKCS11Constants.CKA_VERIFY, true),
 				new CK_ATTRIBUTE(PKCS11Constants.CKA_WRAP, true),
-				new CK_ATTRIBUTE(PKCS11Constants.CKA_MODULUS_BITS, modulusBits),
-				new CK_ATTRIBUTE(PKCS11Constants.CKA_PUBLIC_EXPONENT, publicExponent) };
+				new CK_ATTRIBUTE(PKCS11Constants.CKA_MODULUS_BITS, CKA_MODULUS),
+				new CK_ATTRIBUTE(PKCS11Constants.CKA_PUBLIC_EXPONENT, CKA_PUBLIC_EXPONENT) };
 
 		CK_ATTRIBUTE[] privateKeyTemplate = { //rsa private key
-				new CK_ATTRIBUTE(PKCS11Constants.CKA_ID, id),
-				new CK_ATTRIBUTE(PKCS11Constants.CKA_LABEL, uuID),
+				new CK_ATTRIBUTE(PKCS11Constants.CKA_ID, CKA_ID),
+				new CK_ATTRIBUTE(PKCS11Constants.CKA_LABEL, CKA_LABEL),
 				new CK_ATTRIBUTE(PKCS11Constants.CKA_TOKEN, true),
 				new CK_ATTRIBUTE(PKCS11Constants.CKA_PRIVATE, true),
-				new CK_ATTRIBUTE(PKCS11Constants.CKA_PRIVATE, true),
+				new CK_ATTRIBUTE(PKCS11Constants.CKA_EXTRACTABLE, false),
 				new CK_ATTRIBUTE(PKCS11Constants.CKA_DECRYPT, true),
 				new CK_ATTRIBUTE(PKCS11Constants.CKA_SIGN, true),
 				new CK_ATTRIBUTE(PKCS11Constants.CKA_UNWRAP, true) };
